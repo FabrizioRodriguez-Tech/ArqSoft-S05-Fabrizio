@@ -24,3 +24,10 @@ Patrón Controlador-Vista (MVC) puro con paso de datos dinámicos.
 - `/Medico` — catálogo del personal de salud
 - `/Cita` — agenda general con los nombres de pacientes y médicos resueltos
 
+##Capturas
+  
+<img width="1918" height="1077" alt="image" src="https://github.com/user-attachments/assets/aa1227b5-7800-42b2-961b-7b30aa4a2320" />
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/26695801-dc28-4db2-9745-9780c38580d2" />
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/10c9dcd3-cd19-4870-9567-3616f847b549" />
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/ce9551de-120f-4910-b588-abce4832470b" />
+
