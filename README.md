@@ -1,6 +1,6 @@
 # CitasApp
 
-App de citas médicas construida con ASP.NET Core MVC (.NET 8).
+App de citas médicas construida con ASP.NET Core MVC (.NET 10).
 
 ## Entidades
 - **Paciente** — lista y detalle de pacientes registrados con sus citas asociadas
@@ -24,6 +24,3 @@ Patrón Controlador-Vista (MVC) puro con paso de datos dinámicos.
 - `/Medico` — catálogo del personal de salud
 - `/Cita` — agenda general con los nombres de pacientes y médicos resueltos
 
-## Requisitos
-- .NET 8.0
-- Visual Studio 2022
