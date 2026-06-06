@@ -1,9 +1,17 @@
-﻿@model IEnumerable<dynamic>
-<h2>Agenda Completa de Citas</h2>
-<table class="table table-bordered">
+﻿@model IEnumerable<CitasApp.Models.Cita>
+@{
+    // Recuperamos los catálogos que enviamos desde el controlador
+    var pacientes = ViewBag.Pacientes as List<CitasApp.Models.Paciente>;
+    var medicos = ViewBag.Medicos as List<CitasApp.Models.Medico>;
+}
+
+<h1 class="display-4 my-4">Agenda de Citas</h1>
+
+<table class="table table-bordered table-striped" style="max-width: 850px;">
     <thead>
         <tr>
-            <th>Fecha y Hora</th>
+            <th>Fecha</th>
+            <th>Hora</th>
             <th>Paciente</th>
             <th>Médico</th>
             <th>Motivo</th>
@@ -11,14 +19,28 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var c in Model)
         {
+            // Buscamos el nombre correspondiente al ID de forma dinámica
+            var nombrePaciente = pacientes?.FirstOrDefault(p => p.Id == c.PacienteId)?.Nombre ?? "Desconocido";
+            var nombreMedico = medicos?.FirstOrDefault(m => m.Id == c.MedicoId)?.Nombre ?? "Desconocido";
+
             <tr>
-                <td>@item.Fecha.ToString("dd/MM/yyyy") - @item.Hora.ToString("HH:mm")</td>
-                <td>@item.NombrePaciente</td>
-                <td>@item.NombreMedico</td>
-                <td>@item.Motivo</td>
-                <td><span class="badge @(item.Estado == "Confirmada" ? "bg-success" : "bg-warning")">@item.Estado</span></td>
+                <td>@c.Fecha</td>
+                <td>@c.FechaHora</td>
+                <td>@nombrePaciente</td>
+                <td>@nombreMedico</td>
+                <td>@c.Motivo</td>
+                <td>
+                    @if (c.Estado == "Confirmada")
+                    {
+                        <span class="badge bg-success">@c.Estado</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">@c.Estado</span>
+                    }
+                </td>
             </tr>
         }
     </tbody>

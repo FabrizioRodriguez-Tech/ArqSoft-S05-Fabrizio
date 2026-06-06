@@ -14,19 +14,19 @@ namespace CitasApp.Controllers
             new Medico { Id = 3, Nombre = "Dr. Roberto Sánchez", Especialidad = "Cardiología", NumeroLicencia = "CA-30117" }
         };
 
-        // Al escribir /Medico en el navegador
-        public JsonResult Index()
+        // 1. Cambiado a IActionResult y return View para que renderice la tabla HTML
+        public IActionResult Index()
         {
-            return Json(_medicos);
+            return View(_medicos);
         }
 
-        // Al escribir /Medico/Detalle/1
+        // 2. Cambiado para que busque su respectiva vista de detalle si se requiere
         public IActionResult Detalle(int id)
         {
             var medico = _medicos.FirstOrDefault(m => m.Id == id);
             if (medico == null) return NotFound("Médico no encontrado");
 
-            return Json(medico);
+            return View(medico);
         }
     }
 }
