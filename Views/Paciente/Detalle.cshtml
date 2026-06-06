@@ -1,0 +1,11 @@
+﻿@model CitasApp.Models.Paciente
+<h2>Detalle del Paciente</h2>
+<div class="card" style="width: 24rem;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Nombre @Model.Apellido</h5>
+        <p class="card-text"><strong>Email:</strong> @Model.Email</p>
+        <p class="card-text"><strong>Teléfono:</strong> @Model.Telefono</p>
+        <a asp-controller="Cita" asp-action="PorPaciente" asp-route-pacienteId="@Model.Id" class="btn btn-primary">Ver sus Citas</a>
+        <a asp-action="Index" class="btn class-secondary">Regresar</a>
+    </div>
+</div>

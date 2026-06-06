@@ -1,0 +1,10 @@
+﻿@model CitasApp.Models.Medico
+<h2>Ficha del Médico</h2>
+<div class="card" style="width: 24rem;">
+    <div class="card-body">
+        <h5 class="card-title">Dr. @Model.Nombre @Model.Apellido</h5>
+        <p class="card-text"><strong>Especialidad:</strong> @Model.Especialidad</p>
+        <p class="card-text"><strong>Número de Licencia:</strong> @Model.NumeroLicencia</p>
+        <a asp-action="Index" class="btn btn-secondary">Regresar</a>
+    </div>
+</div>

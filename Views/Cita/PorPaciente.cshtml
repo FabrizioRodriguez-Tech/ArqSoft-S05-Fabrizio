@@ -1,0 +1,31 @@
+﻿@model IEnumerable<dynamic>
+<h2>Citas del Paciente: @ViewBag.PacienteNombre</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Fecha y Hora</th>
+            <th>Médico</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr><td colspan="4" class="text-center">No hay citas registradas para este paciente.</td></tr>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Fecha.ToString("dd/MM/yyyy") - @item.Hora.ToString("HH:mm")</td>
+                    <td>@item.NombreMedico</td>
+                    <td>@item.Motivo</td>
+                    <td><span class="badge @(item.Estado == "Confirmada" ? "bg-success" : "bg-warning")">@item.Estado</span></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<a asp-controller="Paciente" asp-action="Index" class="btn btn-secondary mt-3">Regresar a Pacientes</a>
