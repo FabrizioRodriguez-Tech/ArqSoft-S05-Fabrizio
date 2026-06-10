@@ -1,0 +1,50 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="hero-panel">
+    <div class="hero-copy">
+        <span class="eyebrow">Plataforma médica SaaS</span>
+        <h1>Citas App</h1>
+        <p>Sistema profesional para coordinar agenda médica, pacientes y especialistas con una experiencia moderna y responsiva.</p>
+        <div class="hero-actions">
+            <a href="/Cita/Crear" class="btn btn-primary">Nueva cita</a>
+            <a href="/Cita/Index" class="btn btn-outline-primary">Ver agenda</a>
+        </div>
+    </div>
+    <div class="hero-dashboard glass">
+        <div class="hero-dashboard-header">
+            <span>Centro operativo</span>
+            <span class="badge ca-badge-success">Online</span>
+        </div>
+        <div class="mini-calendar">
+            <span></span><span></span><span class="active"></span><span></span><span></span>
+        </div>
+        <div class="hero-row"><span>Citas</span><strong>24</strong></div>
+        <div class="hero-row"><span>Médicos</span><strong>8</strong></div>
+        <div class="hero-row"><span>Pacientes</span><strong>128</strong></div>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <a href="/Cita/Index" class="stat-card module-card">
+        <span class="module-icon">C</span>
+        <p class="stat-label">Agenda</p>
+        <p class="stat-value">Citas</p>
+        <span class="stat-trend">Seguimiento clínico</span>
+    </a>
+    <a href="/Medico/Index" class="stat-card module-card">
+        <span class="module-icon info">M</span>
+        <p class="stat-label">Directorio</p>
+        <p class="stat-value">Médicos</p>
+        <span class="stat-trend">Especialidades</span>
+    </a>
+    <a href="/Paciente/Index" class="stat-card module-card">
+        <span class="module-icon success">P</span>
+        <p class="stat-label">Registro</p>
+        <p class="stat-value">Pacientes</p>
+        <span class="stat-trend">Contacto e historial</span>
+    </a>
+</section>
