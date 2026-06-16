@@ -1,0 +1,23 @@
+﻿@model IEnumerable<CitasApp.Models.Medico>
+
+<h1 class="display-4 my-4">Médicos registrados</h1>
+
+<table class="table table-bordered table-striped" style="max-width: 700px;">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.Nombre</td>
+                <td>@m.Especialidad</td>
+                <td><a href="/Medico/Detalle/@m.Id" class="btn btn-link p-0">Ver detalle</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
