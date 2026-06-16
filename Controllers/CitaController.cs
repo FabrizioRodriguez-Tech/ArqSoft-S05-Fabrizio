@@ -1,74 +1,50 @@
-﻿using CitasApp.Domain.Interfaces;
-using CitasApp.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using CitasApp.Models;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace CitasApp.Web.Controllers
+namespace CitasApp.Controllers
 {
     public class CitaController : Controller
     {
-        private readonly ICitaRepository _citaRepo;
-        private readonly IPacienteRepository _pacienteRepo;
-        private readonly IMedicoRepository _medicoRepo;
-
-        public CitaController(ICitaRepository citaRepo,
-                              IPacienteRepository pacienteRepo,
-                              IMedicoRepository medicoRepo)
+        private static readonly List<Cita> _citas = new List<Cita>
         {
-            _citaRepo = citaRepo;
-            _pacienteRepo = pacienteRepo;
-            _medicoRepo = medicoRepo;
-        }
+            new Cita { Id = 1, PacienteId = 1, MedicoId = 1, Fecha = "1/6/2026", FechaHora = "9:00", Motivo = "Consulta general", Estado = "Confirmada" },
+            new Cita { Id = 2, PacienteId = 2, MedicoId = 2, Fecha = "1/6/2026", FechaHora = "10:00", Motivo = "Revisión de resultados", Estado = "Pendiente" },
+            new Cita { Id = 3, PacienteId = 3, MedicoId = 1, Fecha = "3/6/2026", FechaHora = "11:00", Motivo = "Primera consulta", Estado = "Pendiente" }
+        };
 
-        private void CargarViewBag()
+        // Creamos copias locales de los catálogos para poder cruzar la información de los nombres
+        private static readonly List<Paciente> _pacientes = new List<Paciente>
         {
-            ViewBag.Pacientes = _pacienteRepo.ObtenerTodos();
-            ViewBag.Medicos = _medicoRepo.ObtenerTodos();
-        }
+            new Paciente { Id = 1, Nombre = "Ana García" },
+            new Paciente { Id = 2, Nombre = "Luis Martínez" },
+            new Paciente { Id = 3, Nombre = "María López" }
+        };
 
+        private static readonly List<Medico> _medicos = new List<Medico>
+        {
+            new Medico { Id = 1, Nombre = "Dr. Carlos Reyes" },
+            new Medico { Id = 2, Nombre = "Dra. Patricia Vega" },
+            new Medico { Id = 3, Nombre = "Dr. Roberto Sánchez" }
+        };
+
+        // 1. Cambiado a IActionResult para renderizar HTML y usando ViewBag para pasar los nombres
         public IActionResult Index()
         {
-            CargarViewBag();
-            return View(_citaRepo.ObtenerTodos());
+            ViewBag.Pacientes = _pacientes;
+            ViewBag.Medicos = _medicos;
+            return View(_citas);
         }
 
+        // 2. Cambiado para que la vista filtrada por paciente también sea HTML visual
         public IActionResult PorPaciente(int pacienteId)
         {
-            CargarViewBag();
-            return View(_citaRepo.ObtenerPorPaciente(pacienteId));
-        }
+            ViewBag.Pacientes = _pacientes;
+            ViewBag.Medicos = _medicos;
 
-        public IActionResult Crear()
-        {
-            CargarViewBag();
-            return View(new Cita());
-        }
-
-        [HttpPost]
-        public IActionResult Crear(Cita cita)
-        {
-            _citaRepo.Agregar(cita);
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Editar(int id)
-        {
-            var cita = _citaRepo.ObtenerPorId(id);
-            if (cita == null) return NotFound();
-            CargarViewBag();
-            return View(cita);
-        }
-
-        [HttpPost]
-        public IActionResult Editar(Cita cita)
-        {
-            _citaRepo.Actualizar(cita);
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Eliminar(int id)
-        {
-            _citaRepo.Eliminar(id);
-            return RedirectToAction("Index");
+            var filtradas = _citas.Where(c => c.PacienteId == pacienteId).ToList();
+            return View(filtradas);
         }
     }
 }
