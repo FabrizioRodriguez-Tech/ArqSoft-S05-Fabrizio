@@ -1,8 +1,8 @@
-﻿@model IEnumerable<CitasApp.Models.Cita>
+﻿@model IEnumerable<CitasApp.Domain.Models.Cita>
 @{
     // Recuperamos los catálogos que enviamos desde el controlador
-    var pacientes = ViewBag.Pacientes as List<CitasApp.Models.Paciente>;
-    var medicos = ViewBag.Medicos as List<CitasApp.Models.Medico>;
+    var pacientes = ViewBag.Pacientes as List<CitasApp.Domain.Models.Paciente>;
+    var medicos = ViewBag.Medicos as List<CitasApp.Domain.Models.Medico>;
 }
 
 <h1 class="display-4 my-4">Agenda de Citas</h1>

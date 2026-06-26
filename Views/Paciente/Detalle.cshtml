@@ -1,8 +1,7 @@
-﻿@model CitasApp.Models.Paciente
+﻿@model CitasApp.Domain.Models.Paciente
 @{
     ViewData["Title"] = "Detalle del Paciente";
-    // Recuperamos las citas del ViewBag de forma segura casteando el tipo de dato
-    var citas = ViewBag.Citas as List<CitasApp.Models.Cita> ?? new List<CitasApp.Models.Cita>();
+    var citas = ViewBag.Citas as List<CitasApp.Domain.Models.Cita> ?? new List<CitasApp.Domain.Models.Cita>();
 }
 
 <div class="container my-4" style="max-width: 800px; font-family: sans-serif;">
