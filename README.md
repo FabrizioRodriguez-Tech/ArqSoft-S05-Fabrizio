@@ -1,33 +1,50 @@
-# CitasApp
+# CitasApp API
 
-App de citas médicas construida con ASP.NET Core MVC (.NET 10).
+Aplicación backend para la gestión de citas médicas, desarrollada con **ASP.NET Core (.NET 10)** bajo una arquitectura de capas, exponiendo un servicio RESTful documentado con **OpenAPI/Scalar**.
 
-## Entidades
-- **Paciente** — lista y detalle de pacientes registrados con sus citas asociadas
-- **Médico** — catálogo de personal médico disponible con especialidades
-- **Cita** — agenda completa mapeada dinámicamente con nombres reales y filtro por paciente
+## Arquitectura del Proyecto
+
+El sistema está organizado para separar la lógica de negocio, la persistencia y la exposición de datos:
+
+- **Domain:** Define los modelos y los contratos (`Interfaces`) para la persistencia.
+- **Application:** Contiene los servicios que orquestan la lógica de negocio entre el dominio y los repositorios.
+- **Infrastructure:** Implementación de repositorios basados en archivos JSON para persistencia de datos.
+- **Api:** Capa de presentación que expone los endpoints REST.
+
+## Entidades y Funcionalidades
+
+La API permite la gestión de los siguientes recursos:
+
+- **Pacientes:** Registro y consulta de información.
+- **Médicos:** Directorio de profesionales disponibles.
+- **Citas:** Gestión integral de agenda.
+  - `GET /api/citas`: Listado completo de citas.
+  - `GET /api/citas/paciente/{pacienteId}`: Filtrado de citas por paciente.
+  - `POST /api/citas`: Registro de una nueva cita.
 
 ## Persistencia
-Colecciones estáticas en memoria — sin base de datos ni archivos externos.
-- Datos simulados directamente dentro de los Controladores
-- Estructuras simplificadas usando tipos estándar para agilizar la consistencia
+- **Almacenamiento:** Archivos JSON ubicados en `data/`.
+- **Estructura:**
+  - `data/pacientes.json`
+  - `data/medicos.json`
+  - `data/citas.json`
 
-## Arquitectura
-Patrón Controlador-Vista (MVC) puro con paso de datos dinámicos.
-- `Controllers/` — lógica de negocio, colecciones estáticas y mapeo mediante `ViewBag`
-- `Models/` — entidades base adaptadas (`Paciente`, `Medico`, `Cita`)
-- `Views/` — plantillas Razor con diseño responsivo basado en tablas de Bootstrap 5
+## Documentación y Pruebas (Scalar)
 
-## Navegación
-- `/Paciente` — lista estructurada de pacientes
-- `/Paciente/Detalle/{id}` — ficha del paciente e historial de sus citas filtradas
-- `/Medico` — catálogo del personal de salud
-- `/Cita` — agenda general con los nombres de pacientes y médicos resueltos
+Este proyecto utiliza **Scalar** como interfaz visual para OpenAPI. Permite visualizar los endpoints, ver los modelos de datos y realizar pruebas de las peticiones HTTP directamente desde el navegador.
 
-##Capturas
-  
-<img width="1918" height="1077" alt="image" src="https://github.com/user-attachments/assets/aa1227b5-7800-42b2-961b-7b30aa4a2320" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/26695801-dc28-4db2-9745-9780c38580d2" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/10c9dcd3-cd19-4870-9567-3616f847b549" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/ce9551de-120f-4910-b588-abce4832470b" />
+- **URL de acceso:** Una vez ejecutada la aplicación, accede a `http://localhost:[PUERTO]/scalar/v1`
 
+## Especificaciones Técnicas
+
+- **Framework:** .NET 10.0
+- **Documentación:** Microsoft.AspNetCore.OpenApi + Scalar.AspNetCore
+- **Inyección de Dependencias:** Registro nativo de servicios y repositorios en `Program.cs`.
+
+## Cómo ejecutar
+
+1. Asegúrate de tener instalado el **SDK de .NET 10**.
+2. Clona el repositorio y navega a la carpeta del proyecto.
+3. Ejecuta desde la terminal:
+   ```bash
+   dotnet run --project CitasApp.Api
