@@ -52,9 +52,6 @@ La API expone los siguientes recursos a través de los servicios de aplicación:
 *   `/Cita` — Agenda general.
 
 ## Estado del Proyecto
-*   ✅ **Arquitectura**: Migrada a un diseño en capas con Inyección de Dependencias.
-*   ✅ **Patrones**: Factory y Decorator operativos.
-*   ⏳ **Pendientes**: Implementación del patrón Observer para notificaciones.
-
----
-*Rama configurada para .NET 10.0*
+*   **Arquitectura**: Migrada a un diseño en capas con Inyección de Dependencias.
+*   **Patrones**: Factory y Decorator operativos.
+*   **Pendientes**: Implementación del patrón Observer para notificaciones.
