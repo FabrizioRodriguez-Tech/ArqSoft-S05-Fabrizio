@@ -33,7 +33,14 @@ La API permite la gestión de los siguientes recursos:
 
 Este proyecto utiliza **Scalar** como interfaz visual para OpenAPI. Permite visualizar los endpoints, ver los modelos de datos y realizar pruebas de las peticiones HTTP directamente desde el navegador.
 
-- **URL de acceso:** Una vez ejecutada la aplicación, accede a `http://localhost:[PUERTO]/scalar/v1`
+- **URL de acceso:** Una vez ejecutada la aplicación, accede a `(https://localhost:44355/Scalar/v1)
+
+- **Comandos para PowerShell**
+-  curl.exe -k https://localhost:44355/api/medicos
+-   curl.exe -k https://localhost:44355/api/cita
+-    curl.exe -k https://localhost:44355/api/pacientes
+
+
 
 ## Especificaciones Técnicas
 
