@@ -1,33 +1,60 @@
-# CitasApp
+# CitasApp - Rama: gof
 
-App de citas médicas construida con ASP.NET Core MVC (.NET 10).
+App de citas médicas evolucionada hacia una arquitectura en capas con implementación de patrones de diseño GOF.
 
-## Entidades
-- **Paciente** — lista y detalle de pacientes registrados con sus citas asociadas
-- **Médico** — catálogo de personal médico disponible con especialidades
-- **Cita** — agenda completa mapeada dinámicamente con nombres reales y filtro por paciente
+## Descripción del Proyecto
+El enfoque principal es la mejora de la mantenibilidad y la observabilidad mediante el uso de patrones de diseño.
 
-## Persistencia
-Colecciones estáticas en memoria — sin base de datos ni archivos externos.
-- Datos simulados directamente dentro de los Controladores
-- Estructuras simplificadas usando tipos estándar para agilizar la consistencia
+## Arquitectura actual
+El proyecto ha sido reestructurado para separar responsabilidades:
 
-## Arquitectura
-Patrón Controlador-Vista (MVC) puro con paso de datos dinámicos.
-- `Controllers/` — lógica de negocio, colecciones estáticas y mapeo mediante `ViewBag`
-- `Models/` — entidades base adaptadas (`Paciente`, `Medico`, `Cita`)
-- `Views/` — plantillas Razor con diseño responsivo basado en tablas de Bootstrap 5
+*   **CitasApp.Domain**: Entidades y contratos (interfaces) del sistema.
+*   **CitasApp.Application**: Lógica de servicios (orquesta el flujo de negocio).
+*   **CitasApp.Infrastructure**: Implementación de repositorios y persistencia.
+*   **CitasApp.Api**: Punto de entrada RESTful.
+*   **CitasApp.Web**: Cliente MVC
 
-## Navegación
-- `/Paciente` — lista estructurada de pacientes
-- `/Paciente/Detalle/{id}` — ficha del paciente e historial de sus citas filtradas
-- `/Medico` — catálogo del personal de salud
-- `/Cita` — agenda general con los nombres de pacientes y médicos resueltos
+## Patrones GOF Implementados
 
-##Capturas
-  
-<img width="1918" height="1077" alt="image" src="https://github.com/user-attachments/assets/aa1227b5-7800-42b2-961b-7b30aa4a2320" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/26695801-dc28-4db2-9745-9780c38580d2" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/10c9dcd3-cd19-4870-9567-3616f847b549" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/ce9551de-120f-4910-b588-abce4832470b" />
+### 1. Factory (RepositoryFactory)
+*   **Propósito**: Desacoplar la creación de repositorios de la capa de aplicación.
+*   **Implementación**: `RepositoryFactory` permite inyectar la instancia correcta del repositorio según el entorno o configuración, evitando instanciación directa (`new`) en los servicios.
 
+### 2. Decorator (LoggingPacienteRepository)
+*   **Propósito**: Añadir funcionalidad transversal (Cross-cutting concern) sin alterar la lógica central del repositorio.
+*   **Implementación**: `LoggingPacienteRepository` envuelve al repositorio original, permitiendo registrar logs con timestamps de forma automática en cada operación (`ObtenerTodos`, `ObtenerPorId`, etc.).
+
+## Estructura de Navegación / Endpoints
+La API expone los siguientes recursos a través de los servicios de aplicación:
+
+### Pacientes
+* `GET /api/pacientes` — Lista todos los pacientes registrados.
+* `GET /api/pacientes/{id}` — Obtiene el detalle de un paciente específico.
+* `POST /api/pacientes` — Registra un nuevo paciente en el sistema.
+
+### Médicos
+* `GET /api/medicos` — Obtiene el catálogo de personal médico.
+* `GET /api/medicos/{id}` — Detalle de un médico específico.
+
+### Citas
+* `GET /api/citas` — Agenda completa de citas.
+* `GET /api/citas/porpaciente/{pacienteId}` — Filtra las citas asociadas a un paciente.
+* `POST /api/citas` — Crea una nueva cita.
+* `POST /api/citas/confirmar/{citaId}` — Confirma una cita programada.
+
+### API REST
+*   `GET /api/pacientes` — Lista de pacientes (loggeada mediante Decorator).
+*   `GET /api/pacientes/{id}` — Detalle de un paciente.
+
+### Web (MVC)
+*   `/Paciente` — Interfaz de consulta de pacientes.
+*   `/Medico` — Catálogo de personal de salud.
+*   `/Cita` — Agenda general.
+
+## Estado del Proyecto
+*   ✅ **Arquitectura**: Migrada a un diseño en capas con Inyección de Dependencias.
+*   ✅ **Patrones**: Factory y Decorator operativos.
+*   ⏳ **Pendientes**: Implementación del patrón Observer para notificaciones.
+
+---
+*Rama configurada para .NET 10.0*
