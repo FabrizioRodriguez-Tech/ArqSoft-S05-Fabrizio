@@ -1,33 +1,62 @@
-# CitasApp
+# Arquitectura del Sistema — CitasApp
 
-App de citas médicas construida con ASP.NET Core MVC (.NET 10).
+Este documento describe la estructura arquitectónica actual de la solución **CitasApp**, detallando la organización de sus componentes en N-Capas, el flujo de datos y la integración de la API REST y el portal Web.
 
-## Entidades
-- **Paciente** — lista y detalle de pacientes registrados con sus citas asociadas
-- **Médico** — catálogo de personal médico disponible con especialidades
-- **Cita** — agenda completa mapeada dinámicamente con nombres reales y filtro por paciente
 
-## Persistencia
-Colecciones estáticas en memoria — sin base de datos ni archivos externos.
-- Datos simulados directamente dentro de los Controladores
-- Estructuras simplificadas usando tipos estándar para agilizar la consistencia
+## Diagrama de Arquitectura (N-Capas)
 
-## Arquitectura
-Patrón Controlador-Vista (MVC) puro con paso de datos dinámicos.
-- `Controllers/` — lógica de negocio, colecciones estáticas y mapeo mediante `ViewBag`
-- `Models/` — entidades base adaptadas (`Paciente`, `Medico`, `Cita`)
-- `Views/` — plantillas Razor con diseño responsivo basado en tablas de Bootstrap 5
+El siguiente diagrama refleja el estado real y actual de la solución en Visual Studio, mostrando cómo conviven la interfaz MVC y la API REST consumiendo el mismo núcleo de negocio.
 
-## Navegación
-- `/Paciente` — lista estructurada de pacientes
-- `/Paciente/Detalle/{id}` — ficha del paciente e historial de sus citas filtradas
-- `/Medico` — catálogo del personal de salud
-- `/Cita` — agenda general con los nombres de pacientes y médicos resueltos
+```mermaid
+graph TD
+    %% Capas de Presentación
+    subgraph Presentacion [Capa de Presentación / Clientes]
+        Web[CitasApp.Web <br> Portal MVC - Vistas Razor]
+        Api[CitasApp.Api <br> API REST - OpenAPI/Scalar]
+    end
 
-##Capturas
-  
-<img width="1918" height="1077" alt="image" src="https://github.com/user-attachments/assets/aa1227b5-7800-42b2-961b-7b30aa4a2320" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/26695801-dc28-4db2-9745-9780c38580d2" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/10c9dcd3-cd19-4870-9567-3616f847b549" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/ce9551de-120f-4910-b588-abce4832470b" />
+    %% Capa de Aplicación
+    subgraph Aplicacion [Capa de Aplicación]
+        CitaSvc[CitaService.cs]
+        MedSvc[MedicoService.cs]
+        PacSvc[PacienteService.cs]
+    end
 
+    %% Capa de Infraestructura
+    subgraph Infraestructura [Capa de Infraestructura]
+        Factory[RepositoryFactory.cs]
+        subgraph Estrategias [Estrategias de Repositorio]
+            JsonCita[JsonCitaRepository.cs]
+            JsonMed[JsonMedicoRepository.cs]
+            JsonPac[JsonPacienteRepository.cs]
+            LogPac[LogginPacienteRepository.cs]
+            MemPac[MemoriaPacienteRepository.cs]
+        end
+    end
+
+    %% Capa de Dominio
+    subgraph Dominio [Capa de Dominio]
+        DomainEntities[Modelos / Entidades <br> Paciente, Medico, Cita]
+        DomainInterfaces[Contratos / Interfaces <br> ICitaRepository, etc.]
+    end
+
+    %% Persistencia
+    subgraph Persistencia [Persistencia de Datos]
+        JsonFiles[(Archivos .json <br> citas, medicos, pacientes)]
+    end
+
+    %% Acoplamientos y Dependencias
+    Web --> Aplicacion
+    Api --> Aplicacion
+    
+    Aplicacion --> Dominio
+    Infraestructura --> Dominio
+    
+    %% Inyección y configuración de fábricas
+    Web -.-> Infraestructura
+    Api -.-> Infraestructura
+
+    %% Flujo de almacenamiento
+    JsonCita --> JsonFiles
+    JsonMed --> JsonFiles
+    JsonPac --> JsonFiles
